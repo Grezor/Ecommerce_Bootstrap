@@ -1,6 +1,6 @@
 <?php 
 
-require_once '../../include/functions.php';
+require_once (__DIR__ .'/../../include/functions.php');
 
 sessionStart();
 if (!empty($_POST) && !empty($_POST['name']) && !empty($_POST['password'])) {
@@ -11,20 +11,17 @@ if (!empty($_POST) && !empty($_POST['name']) && !empty($_POST['password'])) {
         $_SESSION['auth'] = $user;
         $_SESSION['flash']['success'] = "Vous etes maintenant connecté";
         $pdo->prepare('UPDATE client SET connection_at = NOW()  WHERE id = ?')->execute([$user->id]);
-        if($user->role === '1'){
-            header('Location: /admin.php');
-            exit();
-        }        
-        header('Location: account.php');
-        
-    }else{
-        header('Location: login.php');
-        $_SESSION['flash']['danger'] = "Mot de passe ou identifiant incorrecte";
+
+        $route = $user->role === '1' ? '/admin' : '/account';
+        header('Location: ' . $route);
+        exit();
     }
-   die();
-   
+    
+    $_SESSION['flash']['danger'] = "Mot de passe ou identifiant incorrecte";
+    header('Location: /login');
+    exit();
 }
-require_once ('../../include/header.php');
+require_once (__DIR__ . '/../../include/header.php');
 ?>
 
 
@@ -60,7 +57,7 @@ if(isset($_SESSION['flash'])): ?>
           </div> <!-- form-group// -->
           
           <div class="form-group">
-          	<a href="Auth/forget.php" class="float-right">Mot de passe oublié ?</a> 
+          	<a href="/forget" class="float-right">Mot de passe oublié ?</a> 
             <label class="float-left custom-control custom-checkbox"> <input type="checkbox" class="custom-control-input" checked=""> <div class="custom-control-label"> Remember </div> </label>
           </div> <!-- form-group form-check .// -->
           <div class="form-group">
@@ -70,9 +67,13 @@ if(isset($_SESSION['flash'])): ?>
       </div> <!-- card-body.// -->
     </div> <!-- card .// -->
 
-     <p class="text-center mt-4">Pas de compte ? <a href="Auth/register.php">Inscription</a></p>
+     <p class="text-center mt-4">Pas de compte ? <a href="/register">Inscription</a></p>
      <br><br>
 <!-- ============================ COMPONENT LOGIN  END.// ================================= -->
 
 
 </section>
+
+<?php 
+include_once __DIR__ . '/../../include/footer.php';
+?>

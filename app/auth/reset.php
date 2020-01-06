@@ -1,13 +1,13 @@
 <?php 
 
 
-require_once '../include/functions.php';
+require_once __DIR__ .'/../../include/functions.php';
 // sessionStart();
 
 
 if(isset($_GET['id']) && isset($_GET['token'])){
-    require_once '../include/db.php';
-    require_once '../include/functions.php';
+    require_once __DIR__ . '/../../include/db.php';
+    require_once __DIR__ . '/../../include/functions.php';
     $req = $pdo->prepare('SELECT * FROM client WHERE id = ? and reset_token = ? AND reset_at > DATE_SUB(NOW(), INTERVAL 30 MINUTE)');
     $req->execute([$_GET['id'],$_GET['token']]);
     $user = $req->fetch();
@@ -20,21 +20,21 @@ if(isset($_GET['id']) && isset($_GET['token'])){
                 session_start();
                 $_SESSION['flash']['success'] = "Votre mot de passe a bien été modifié";
                 $_SESSION['auth'] = $user;
-                header('Location: account.php');
+                header('Location: /account');
             }
         }
     }else{
         session_start();
         $_SESSION['flash']['danger'] = "ce token n'est pas valide";
-        header('Location: login.php');
+        header('Location: /login');
         exit();
     }
 }else{
-   header('Location: login.php');
+   header('Location: /login');
    exit();
 }
 
-require_once '../include/header.php';
+require_once __DIR__ . '/../../include/header.php';
 ?>
 
 
@@ -87,3 +87,7 @@ if(isset($_SESSION['flash'])): ?>
 
 
 </section>
+
+<?php 
+include_once __DIR__ . '/../../include/footer.php';
+?>

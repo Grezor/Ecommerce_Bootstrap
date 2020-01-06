@@ -1,7 +1,7 @@
 <?php 
 
 
-require_once __DIR__ . '/../include/functions.php';
+require_once __DIR__ . '/../../include/functions.php';
 sessionStart();
 logged_only();
 
@@ -19,7 +19,7 @@ if(!empty($_POST)){
 }
 
 
-require_once __DIR__ . '/../include/header.php';
+require_once __DIR__ . '/../../include/header.php';
 ?>
 <div class="container">
 
@@ -56,3 +56,6 @@ if(isset($_SESSION['flash'])): ?>
 
 
 </div>
+<?php 
+include_once __DIR__ . '/../../include/footer.php';
+?>

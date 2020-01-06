@@ -3,7 +3,7 @@
 //       Mot de passe 
 //==============================================================
 
-require_once '../include/functions.php';
+require_once __DIR__ .'/../../include/functions.php';
 sessionStart();
 
 
@@ -17,8 +17,8 @@ if (!empty($_POST) && !empty($_POST['email'])) {
         $pdo->prepare('UPDATE client SET reset_token = ?, reset_at = now() WHERE id = ?')->execute([$reset_token, $user->id]);
     
         $_SESSION['flash']['success'] = "Les instructions du rappel du mot de passe vous ont été envoyé par email";
-        mail($_POST['email'], 'Reintialisation de votre mot de passe', "Afin de reinitialiser votre compte merci de cliquer sur ce lien\n\nhttp://localhost/Ecommerce_Bootstrap/auth/reset.php?id={$user->id}&token=$reset_token");
-        header('Location: login.php');
+        mail($_POST['email'], 'Reintialisation de votre mot de passe', "Afin de reinitialiser votre compte merci de cliquer sur ce lien\n\nhttp://localhost:5222/reset?id={$user->id}&token=$reset_token");
+        header('Location: /login');
         exit();
     }else{
         $_SESSION['flash']['danger'] = "Aucun compte ne correspond a cette adresse";
@@ -27,7 +27,7 @@ if (!empty($_POST) && !empty($_POST['email'])) {
    
 }
 
-require_once '../include/header.php';
+require_once __DIR__ .'/../../include/header.php';
 ?>
 
 
@@ -65,7 +65,7 @@ require_once '../include/header.php';
       </div> 
     </div> 
 
-     <p class="text-center mt-4">Pas de compte ? <a href="Auth/register.php">Inscription</a></p>
+     <p class="text-center mt-4">Pas de compte ? <a href="/register">Inscription</a></p>
      <br><br>
 
 

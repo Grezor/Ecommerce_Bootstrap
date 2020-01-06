@@ -1,11 +1,11 @@
 <?php
 
-require_once '../include/functions.php';
+require_once __DIR__ .'/../../include/functions.php';
 sessionStart();
 
 if (!empty($_POST)) {
 	$errors = [];
-	require_once '../include/db.php';
+	require_once __DIR__ . '/../../include/db.php';
 
 	if (empty($_POST['name']) || !preg_match('/^[a-zA-Z0-9_+$]/', $_POST['name'])) {
 		$errors['name'] = "Votre nom n'est pas valide";
@@ -31,12 +31,15 @@ if (!empty($_POST)) {
 
 		$_SESSION['flash']['success'] = 'produit cree';
 
+	
+		header("Location: /addCategory");
 		exit();
 	}
+
 }
 ?>
 
-<?php require_once '../include/header.php'; ?>
+<?php require_once (__DIR__ .'/../../include/header.php');?>
 
 <section class="section-content padding-y">
 	<div class="card mx-auto" style="max-width:520px; margin-top:40px;">
@@ -81,7 +84,7 @@ if (!empty($_POST)) {
 								</thead>
 								<tbody>
 								<?php
-								$sql = "SELECT id, name FROM category ";
+								$sql = "SELECT id, name FROM category ORDER BY id";
 								$stmt = $pdo->prepare($sql);
 								$stmt->execute();
 								?>
@@ -89,6 +92,7 @@ if (!empty($_POST)) {
 									<tr>
 										<th scope="row"><?php echo $row->id; ?></th>
 										<td><?php echo $row->name; ?></td>
+										<th><a href="/admin/deleteCategory/<?= $row->id; ?>" class="btn btn-danger">Delete</a></th>
 									</tr>
 								<?php } ?>
 								</tbody>
@@ -115,7 +119,8 @@ if (!empty($_POST)) {
 		</article>
 	</div>
 
-	<br><br>
 
 
 </section>
+
+<?php require_once (__DIR__ .'/../../include/footer.php');?>

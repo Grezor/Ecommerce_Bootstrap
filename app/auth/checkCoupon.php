@@ -7,7 +7,7 @@ error_log('test');
 
 
 if (isset($_POST['code_coupon']) && !empty($_POST['code_coupon'])) {
-    var_dump($_POST['code_coupon']);die;
+   //  var_dump($_POST['code_coupon']);die;
     $req = $pdo->prepare('SELECT id  FROM coupon WHERE id = :id', array('id' => $_GET['id']));
     $req->execute(['coupon' => $_POST['code_coupon']]);
     $recupererCoupon = $req->fetch();
@@ -17,4 +17,6 @@ if (isset($_POST['code_coupon']) && !empty($_POST['code_coupon'])) {
  
      }
 
-    
+ 
+     include_once __DIR__ . '/../../include/footer.php';
+     ?>

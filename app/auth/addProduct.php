@@ -1,11 +1,11 @@
 <?php
 
-require_once '../../include/functions.php';
-sessionStart();
+require_once __DIR__ . '/../../include/functions.php';
+// sessionStart();
 
 if (!empty($_POST)) {
 	$errors = [];
-	require_once '../../include/db.php';
+	require_once  __DIR__ . '/../../include/db.php';
 
 	if (empty($_POST['name']) || !preg_match('/^[a-zA-Z0-9_+$]/', $_POST['name'])) {
 		$errors['name'] = "Votre nom n'est pas valide";
@@ -57,14 +57,15 @@ if (!empty($_POST)) {
 
 	// Pour envoyer les données a la base de données
 	if (empty($errors)) {
-		$req = $pdo->prepare("INSERT INTO product (name, description, price, quantity, ref, is_location, created_at)
-			VALUES(:name, :description, :price, :quantity, :ref, :is_location, now())");
+		$req = $pdo->prepare("INSERT INTO product (name, description, price, quantity, ref, category_id, is_location, created_at)
+			VALUES(:name, :description, :price, :quantity, :ref, :category_id, :is_location, now())");
 
 		$req->execute([
 			':name' => $_POST['name'],
 			':description' => $_POST['description'],
 			':price' => (int) $_POST['price'],
 			':quantity' => $_POST['quantity'],
+			':category_id' => $_POST['category_id'],
 			':ref' => $_POST['ref'],
 			':is_location' => (int) $location			
 		]);
@@ -81,8 +82,6 @@ if (!empty($_POST)) {
 			':productId' => $productId,
 			':files' => $destinationfile
 		]);
-
-
 
 		// On envoit l'email de confirmation
 		// mail($_POST['email'], 'Confirmation de votre compte', "Afin de valider votre compte merci de cliquer sur ce lien\n\nhttp://localhost/Ecommerce_Bootstrap/auth/confirm.php?id=$user_id&token=$token");
@@ -104,7 +103,7 @@ if (!empty($_POST)) {
 
 
 ?>
-<?php require_once '../../include/header.php'; ?>
+<?php require_once (__DIR__ .'/../../include/header.php');?>
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
 
@@ -157,6 +156,20 @@ if (!empty($_POST)) {
 						<input type="text" name="ref" class="form-control" placeholder="">
 					</div>
 
+					<?php
+                           
+							$sql = "SELECT id, name FROM category ";
+							$stmt = $pdo->prepare($sql);
+							$stmt->execute();
+							
+							?>
+							<div class="form-group col-md-12">
+							  <select name="category_id">
+								<?php foreach ($stmt as $row) { ?>
+								  <option value="<?php echo $row->id; ?>"><?php echo $row->id; ?> - <?php echo $row->name; ?></option>
+								<?php } ?>
+							  </select>
+
 					<div class="form-group col-md-12">
 						<label class="custom-control custom-checkbox">
 							<input type="checkbox" name="is_location" class="custom-control-input">
@@ -191,9 +204,10 @@ if (!empty($_POST)) {
 							<th scope="col">id</th>
 							<th scope="col">nom</th>
 							<th scope="col">description</th>
-							<th scope="col">price</th>
+							<th scope="col">prix</th>
 							<th scope="col">quantité</th>
 							<th scope="col">reference</th>
+							<th scope="col">categorie </th>
 							<th scope="col">is_location</th>
 							<th scope="col">IMAGE</th>
 							
@@ -203,7 +217,9 @@ if (!empty($_POST)) {
 					<tbody>
 
 						<?php
-						$requeteSelect = "SELECT id, name, description, price, quantity, ref, is_location, created_at FROM product ";
+						$requeteSelect = "SELECT p.id, p.name,p.quantity, p.price, p.description, p.ref, pimg.path, p.is_location,p.created_at, pimg.is_main, p.category_id 
+						FROM product AS p LEFT JOIN product_image AS pimg ON p.id = pimg.product_id ";
+						// $requeteSelect = "SELECT p.id, p.name, p.description, p.price, p.quantity, p.ref, p.is_location, p.created_at, pimg.is_main, pimg.path FROM product AS p LEFT JOIN product_image AS pimg ON p.id = pimg.product_id";
 						$selectproduct = $pdo->prepare($requeteSelect);
 						$selectproduct->execute();
 
@@ -217,12 +233,19 @@ if (!empty($_POST)) {
 								<th><?= $resultProduct->price; ?></th>
 								<th><?= $resultProduct->quantity; ?></th>
 								<th><?= $resultProduct->ref; ?></th>
+								<th><?= $resultProduct->category_id; ?></th>
 								<th><?= $resultProduct->is_location; ?></th>
-								<th></th>
+								<?php $productImage = $resultProduct->path ?? '../../images/shop/default.jpg'; ?>
+								<th>
+
+							
+								<img style="max-width:32px;" src="../<?= $productImage; ?>"></a>
+
+								</th>
 								<th><?= $resultProduct->created_at; ?></th>
 							
-								<th><a href="edit.php?id=<?= $resultProduct->id; ?>" class="btn btn-success">Edit</a></th>
-								<th><a href="delete.php?id=<?= $resultProduct->id; ?>" class="btn btn-danger">Delete</a></th>
+								<th><a href="/admin/edit/<?= $resultProduct->id; ?>" class="btn btn-success">Edit</a></th>
+								<th><a href="/admin/delete/<?= $resultProduct->id; ?>" class="btn btn-danger">Delete</a></th>
 							
 							</tr>
 
@@ -232,15 +255,19 @@ if (!empty($_POST)) {
 
 
 
-					</tbody>
+				
 				</table>
 
 			</article>
 		</div>
 
-
+		</tbody>
 
 
 
 
 </section>
+
+<?php 
+include_once __DIR__ . '/../../include/footer.php';
+?>

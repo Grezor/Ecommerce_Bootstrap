@@ -10,7 +10,12 @@ Le projet ChoptaPhoto, sert a l'apprentissage et la création d'un site Ecommerc
 
 ## L'architecture : 
 ```
-├───auth (l'authetification du site)
+├─── app
+│   ├─── authentifications
+│   ├─── panier
+│   ├─── booking
+│   ├─── payment
+|   ├─── router
 ├───css
 ├───fonts
 ├───images
@@ -32,7 +37,9 @@ Le projet ChoptaPhoto, sert a l'apprentissage et la création d'un site Ecommerc
 ## Détails des branches : 
 
 - branche master :
-- branche login : 
-
+- branche login : L'authentification
+- branche booking : Système de réservation
+- branche payment : payment du panier 
 ## Glossaire : 
+
 

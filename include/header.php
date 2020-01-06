@@ -45,14 +45,90 @@ $panier = new Panier($DB);
 </head>
 
 <body>
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom header-main">
+            <div class="container">
+                <a href="/" class="brand-wrap">
+                    <img class="logo" src="../images/home/logo1.png">
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/about">Propos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">nouveauté</a>
+                        </li>
+                        <div class="dropdown show">
+                            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Dropdown link
+                            </a>
 
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                    </ul>
+                </div>
+                <ul class="navbar-nav">
+                    <?php
+                    if (isset($_SESSION['auth'])) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Se deconnecter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account">Mon compte</a>
+                    </li>
+                    <div class="my-2 my-lg-0">
+
+                        <?php if (isAdmin($_SESSION['auth'])) : ?>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action page 
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" href="/authbooking">reservation</a>
+                                <a class="dropdown-item" href="/addCoupon">Crée coupon</a>
+                                <a class="dropdown-item" href="/addProduct">Crée produit</a>
+                                <a class="dropdown-item" href="/addCategory">Crée Category</a>
+                                <a class="dropdown-item" href="/allUsers">Liste utilisateurs</a>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        <?php else : ?>
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/register">Inscription</a>
+                            </li>
+                        </ul>
+
+                        <?php endif; ?>
+                    </div>
+        </nav>
+
+        </div>
+    </section>
     <header class="section-header">
 
         <section class="header-main border-bottom">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-4">
-                        <a href="../index.php" class="brand-wrap">
+                        <a href="/" class="brand-wrap">
                             <img class="logo" src="../images/home/logo1.png">
                         </a>
                         <!-- brand-wrap.// -->
@@ -65,7 +141,8 @@ $panier = new Panier($DB);
                     <div class="col-lg-4 col-sm-6 col-12">
                         <div class="widgets-wrap float-md-right">
                             <div class="widget-header  mr-3">
-                                <a href="../panier/manage.php" class="icon icon-sm rounded-circle border"><i class="fa fa-shopping-cart"></i></a>
+                                <a href="../panier/manage.php" class="icon icon-sm rounded-circle border"><i
+                                        class="fa fa-shopping-cart"></i></a>
                                 <span class="badge badge-pill badge-danger notify"><?= $panier->countPanier(); ?></span>
                             </div>
                             <div class="widget-header icontext">
@@ -78,19 +155,19 @@ $panier = new Panier($DB);
                                         <?php
                                         //    var_dump($_SESSION['auth']);
                                         if (isset($_SESSION['auth'])) : ?>
-                                            <a href="../auth/logout.php">Se deconnecter</a>
-                                            <a href="../auth/account.php">Mon compte</a>
-                                            <?php if (isAdmin($_SESSION['auth'])) : ?>
-                                                <a href="../auth/roles.php">roles</a>
-                                                <a href="../auth/dashboard.php">dashboard</a>
-                                                <a href="../auth/addCoupon.php">Crée coupon</a>
-                                                <a href="../auth/addProduct.php">Crée produit</a>
-                                                <a href="../auth/addCategory.php">Crée Category</a>
-                                                <a href="../auth/allUsers.php">Liste utilisateurs</a>
-                                            <?php endif; ?>
+                                        <a href="/logout">Se deconnecter</a>
+                                        <a href="/account">Mon compte</a>
+                                        <?php if (isAdmin($_SESSION['auth'])) : ?>
+                                        <!-- <a href="/roles">roles</a> -->
+                                        <a href="/authbooking">reservation</a>
+                                        <a href="/addCoupon">Crée coupon</a>
+                                        <a href="/addProduct">Crée produit</a>
+                                        <a href="/addCategory">Crée Category</a>
+                                        <a href="/allUsers">Liste utilisateurs</a>
+                                        <?php endif; ?>
                                         <?php else : ?>
-                                            <a href="./app/auth/login.php">Connexion</a> |
-                                            <a href="./app/auth/register.php">Inscription</a>
+                                        <a href="/login">Connexion</a> |
+                                        <a href="/register">Inscription</a>
 
                                         <?php endif; ?>
 
@@ -109,3 +186,17 @@ $panier = new Panier($DB);
         </section>
 
     </header>
+
+
+    <style>
+        .navbar-light .nav-link {
+            color: rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+        }
+
+        .header-main {
+            position: relative;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+    </style>

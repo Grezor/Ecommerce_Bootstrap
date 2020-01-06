@@ -1,3 +1,13 @@
 .king {
     width: 25px !important;
 }
+
+.image_add{
+    width: 32px;
+    height: 32px;
+}
+
+.navbar-light .nav-link {
+    color: #212121!important ;
+    font-weight: 700 !important;
+}

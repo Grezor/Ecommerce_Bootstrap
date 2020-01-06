@@ -1,11 +1,11 @@
 <?php 
 
-require_once '../../include/functions.php';
+require_once __DIR__ . '/../../include/functions.php';
 sessionStart();
 
 if (!empty($_POST)) {
 	$errors = [];
-	require_once '../../include/db.php';
+	require_once __DIR__ . '/../../include/db.php';
 
 	if (empty($_POST['name']) || !preg_match('/^[a-zA-Z0-9_+$]/', $_POST['name'])) {
 		$errors['name'] = "Votre nom n'est pas valide";
@@ -71,7 +71,7 @@ if (!empty($_POST)) {
 }
 ?>
 
-<?php require_once '../../include/header.php'; ?>
+<?php require_once (__DIR__ .'/../../include/header.php');?>
 <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
 
@@ -155,13 +155,14 @@ if (!empty($_POST)) {
 			    </div> <!-- form-group// -->      
 			    <div class="form-group"> 
 		            <label class="custom-control custom-checkbox"> <input type="checkbox" class="custom-control-input" checked=""> <div class="custom-control-label"> I am agree with <a href="#">terms and contitions</a>  </div> </label>
-		        </div> <!-- form-group end.// -->           
+		        </div>          
 			</form>
-		</article><!-- card-body.// -->
-    </div> <!-- card .// -->
+		</article>
+    </div> 
 
-    <br><br>
-<!-- ============================ COMPONENT REGISTER  END.// ================================= -->
 
 
 </section>
+<?php 
+include_once __DIR__ . '/../../include/footer.php';
+?>

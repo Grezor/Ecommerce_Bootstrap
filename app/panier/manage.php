@@ -197,16 +197,9 @@ $panier->affichePrixCouponExiste();
 <!-- ========================= SECTION  END// ========================= -->
 
 <!-- ========================= FOOTER ========================= -->
-<footer class="section-footer border-top padding-y">
-	<div class="container">
-		<p class="float-md-right">
-			&copy Copyright 2019 All rights reserved
-		</p>
-		<p>
-			<a href="#">Terms and conditions</a>
-		</p>
-	</div><!-- //container -->
-</footer>
+<?php 
+include_once __DIR__ . '/../include/footer.php';
+?>
 <!-- ========================= FOOTER END // ========================= -->
 
 
